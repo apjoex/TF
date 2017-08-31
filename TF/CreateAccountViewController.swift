@@ -21,7 +21,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     
     var isSigningIn = false
     
-    var callback : ((String) -> Void)?
+    var callback : ((UserData) -> Void)?
     
     var enteredName : String{
         return name?.text ?? ""
@@ -41,7 +41,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        container.layer.cornerRadius = 10
+        container.layer.cornerRadius = 4.0
         
         rootRef = FIRDatabase.database().reference()
         
@@ -84,7 +84,22 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
                 
                     if(error == nil){
                         print("User id: \(String(describing: user?.email))")
-                        self.callback?("Signed in")
+                        
+                        
+                        self.rootRef.child("users").child(user!.uid).observe(FIRDataEventType.value) { (dataSnapShot : FIRDataSnapshot) in
+                            
+                            //Get user data
+                            
+                            print("Getting data gets here")
+                            
+                            let value = dataSnapShot.value as? NSDictionary
+                            let name = value?["name"] as? String ?? ""
+                    
+                            let userData = UserData(uid: user!.uid, name: name, email: user!.email!)
+                            self.callback?(userData)
+                        }
+                        
+                        
                         self.dismiss(animated: true, completion: nil)
                     }else{
                         
@@ -134,7 +149,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
                         self.rootRef.child("users/\(user!.uid)").setValue(userData.dict)
                         
                         print("User: \(String(describing: user!.uid))")
-                        self.callback?("Hi")
+                        self.callback?(userData)
                         self.dismiss(animated: true, completion: nil)
                     }
                 })
