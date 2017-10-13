@@ -57,7 +57,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
             sender.setTitle("Sign in", for: .normal)
             isSigningIn = false
         }else{
-            //Creat account screen
+            //Create account screen
             label.text = "Sign in"
             btn.setTitle("Sign in", for: .normal)
             name.isHidden = true;

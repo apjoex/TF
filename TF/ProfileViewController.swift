@@ -29,6 +29,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
         }
     }
+    
+    
+    var imageToBeUploaded : UIImage? = nil{
+        didSet{
+            showUpload()
+        }
+    }
 
     
     override func viewDidLoad() {
@@ -37,7 +44,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Do any additional setup after loading the view.
         navBar.rightBarButtonItems?.removeAll()
         navBar.rightBarButtonItems?.append(settingsBtn)
+        
+	
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		if #available(iOS 11.0, *) {
+			self.navigationController?.navigationBar.prefersLargeTitles = true
+		} else {
+			// Fallback on earlier versions
+		}
+	}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -134,11 +151,46 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.present(myPickerController, animated: true, completion: nil)
         
     }
+    
+    func showUpload(){
+    
+        let uploadAlert = UIAlertController(title: "Uploading", message: "Please wait...\n\n", preferredStyle: .alert)
+        
+       // let margin:CGFloat = 8.0
+       // let rect = CGRect(x: 10.0, y: 70.0, width: 250.0, height: 20.0)
+        let rect = CGRect(x: 125.0, y: 70.0, width: 20.0, height: 20.0)
+
+        /*
+        let progresssView = UIProgressView(frame: rect)
+        progresssView.setProgress(0.5, animated: true)
+        progresssView.tintColor = UIColor.black
+        */
+        
+        
+        
+        let indicator = UIActivityIndicatorView(frame: rect)
+        indicator.color = UIColor.black
+        indicator.startAnimating()
+        
+        
+        uploadAlert.view.addSubview(indicator)
+        
+        present(uploadAlert, animated: true, completion: nil)
+
+        
+    }
+    
+    
    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
      //   self.printMessage(string: "Picker code reach here")
         print(info)
+        
         self.dismiss(animated: true, completion: nil)
+        
+        let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        imageToBeUploaded = image!
     }
     
 

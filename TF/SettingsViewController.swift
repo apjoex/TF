@@ -16,6 +16,14 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if #available(iOS 11.0, *) {
+             self.navigationController?.navigationBar.prefersLargeTitles = false
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        title = "Settings"
 
         // Do any additional setup after loading the view.
     }
@@ -26,9 +34,7 @@ class SettingsViewController: UIViewController {
     }
     
     
-    override var prefersStatusBarHidden: Bool{
-        return true
-    }
+
 
     /*
     // MARK: - Navigation

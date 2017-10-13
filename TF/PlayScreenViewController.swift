@@ -45,10 +45,13 @@ class PlayScreenViewController: UIViewController {
                 refillLife()
             case 2:
                 animation3.play()
+				animation3.isHidden = true
             case 1:
                 animation2.play()
+				animation2.isHidden = true
             case 0:
                 animation1.play()
+				animation1.isHidden = true
                 passedMsg = "failure"
                 gameOver()
                 print("Game over")
@@ -61,6 +64,7 @@ class PlayScreenViewController: UIViewController {
     var questions : [QuestionData] = []{
         didSet{
             if(questions.count == 4){
+                refillLife()
                 loadingView.alpha = 0.0
                 showQuestion(position: position)
               //  print(questions[3].question)
@@ -82,11 +86,12 @@ class PlayScreenViewController: UIViewController {
         }
     }
     
-
+    
     @IBOutlet weak var life3: UIView!
     @IBOutlet weak var life2: UIView!
     @IBOutlet weak var life1: UIView!
-    
+	@IBOutlet weak var stackView: UIStackView!
+	
     @IBOutlet weak var loadingView: UIView!
     
     @IBOutlet weak var trueCard: Card!
@@ -104,14 +109,11 @@ class PlayScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        refillLife()
         
         rootRef = FIRDatabase.database().reference().child(category)
         
         loadQuestions()
-        
-        
+		
         //
         let defaults = UserDefaults.standard
         let savedInfo = defaults.string(forKey: "demo")
@@ -171,8 +173,7 @@ class PlayScreenViewController: UIViewController {
             }
             
         })
-        
-    
+		
         
     }
     
@@ -204,36 +205,37 @@ class PlayScreenViewController: UIViewController {
     }
     
     func refillLife(){
-        
+		
         animation1 = LOTAnimationView.animationNamed("heart");
-        animation1.frame = CGRect(x: 2.5, y: 2.5, width: 28, height: 28)
-       // animation1.backgroundColor = UIColor.white
+        animation1.frame = CGRect(x: 1, y: 1, width: 28, height: 28)
         animation1.center = life3.center
         animation1.contentMode = .scaleAspectFit
         animation1.animationSpeed = 0.8
         animation1.loopAnimation = false
-        view.addSubview(animation1)
+        stackView.addSubview(animation1)
         
         
         animation2 = LOTAnimationView.animationNamed("heart");
-        animation2.frame = CGRect(x: 2.5, y: 2.5, width: 28, height: 28)
-       // animation2.backgroundColor = UIColor.white
+        animation2.frame = CGRect(x: 1, y: 1, width: 28, height: 28)
         animation2.center = life2.center
         animation2.contentMode = .scaleAspectFit
         animation2.animationSpeed = 0.8
         animation2.loopAnimation = false
-        view.addSubview(animation2)
+        stackView.addSubview(animation2)
         
         
         animation3 = LOTAnimationView.animationNamed("heart");
-        animation3.frame = CGRect(x: 2.5, y: 2.5, width: 28, height: 28)
-       // animation3.backgroundColor = UIColor.white
+        animation3.frame = CGRect(x: 1, y: 1, width: 28, height: 28)
         animation3.center = life1.center
         animation3.contentMode = .scaleAspectFit
         animation3.animationSpeed = 0.8
         animation3.loopAnimation = false
-        view.addSubview(animation3)
-        
+        stackView.addSubview(animation3)
+		
+		life1.isHidden = true
+		life2.isHidden = true
+		life3.isHidden = true
+
     }
 
     @IBAction func selectTrue(_ sender: UITapGestureRecognizer) {
@@ -337,7 +339,7 @@ class PlayScreenViewController: UIViewController {
     }
     
     override var prefersStatusBarHidden: Bool{
-        return true
+        return false
     }
     
 

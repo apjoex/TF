@@ -10,13 +10,11 @@ import UIKit
 
 class PlayViewController: UIViewController {
 
-    @IBOutlet weak var footballCard: Card!
-    @IBOutlet weak var musicCard: Card!
-    @IBOutlet weak var historyCard: Card!
-    @IBOutlet weak var scienceCard: Card!
-    @IBOutlet weak var technologyCard: Card!
-    @IBOutlet weak var moviesCard: Card!
-    
+	
+	@IBOutlet weak var classicCard: Card!
+	@IBOutlet weak var survivalCard: Card!
+	@IBOutlet weak var sprintCard: Card!
+	
     var category: String = ""
     
     
@@ -25,6 +23,7 @@ class PlayViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+		
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,30 +33,20 @@ class PlayViewController: UIViewController {
     
 
     @IBAction func startGame(_ sender: UITapGestureRecognizer) {
+		
         if let tappedCard = sender.view as? Card{
+			
             switch tappedCard {
-            case footballCard:
+            case classicCard:
                 category = "football"
                 performSegue(withIdentifier: "start", sender: nil)
-            case musicCard:
-                category = "music"
-                performSegue(withIdentifier: "start", sender: nil)
-            case historyCard:
-                category = "history"
-                performSegue(withIdentifier: "start", sender: nil)
-            case scienceCard:
-                category = "science"
-                performSegue(withIdentifier: "start", sender: nil)
-            case technologyCard:
-                category = "technology"
-                performSegue(withIdentifier: "start", sender: nil)
-            case moviesCard:
-                category = "movies"
-                performSegue(withIdentifier: "start", sender: nil)
+				
             default:
                 print("Default")
             }
+			
         }
+		
     }
     
     
